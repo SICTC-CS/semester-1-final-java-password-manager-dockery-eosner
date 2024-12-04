@@ -1,4 +1,5 @@
-import java.util.*; // Imports all classes from java.util
+import java.util.*; 
+import java.io.*; // Import for file handling
 
 class Account {
     private String username;
@@ -29,15 +30,14 @@ class Account {
     public String toString() {
         return "Username: " + username + ", Password: " + password;
     }
-
 }
 
-public class PasswordManager { // Renamed class to match Java conventions
+public class PasswordManager {
     private static final Scanner scanner = new Scanner(System.in);
     private static final Map<String, List<Account>> categories = new HashMap<>();
     private static final Random random = new Random();
 
-    public static void main(String[] args) { // Main method
+    public static void main(String[] args) {
         System.out.println("Welcome to the Java Password Manager.");
         while (true) {
             System.out.println("\nMenu:");
@@ -53,7 +53,7 @@ public class PasswordManager { // Renamed class to match Java conventions
             System.out.print("Choose an option: ");
 
             int choice = scanner.nextInt();
-            scanner.nextLine(); // Consume the newline
+            scanner.nextLine();
 
             switch (choice) {
                 case 1:
@@ -90,7 +90,13 @@ public class PasswordManager { // Renamed class to match Java conventions
     }
 
     private static void addUser() {
-        System.out.println("To be added.");
+        System.out.println("Enter the username for the new user: ");
+        String username = scanner.nextLine();
+        System.out.println("Enter the password for the new user: ");
+        String password = scanner.nextLine();
+        categories.putIfAbsent("Default", new ArrayList<>());
+        categories.get("Default").add(new Account(username, password));
+        System.out.println("User added successfully to Default category.");
     }
 
     private static void addAccount() {
@@ -184,13 +190,23 @@ public class PasswordManager { // Renamed class to match Java conventions
     }
 
     private static void saveToFile() {
-        System.out.println("Save to file functionality here...");
+        try (PrintWriter writer = new PrintWriter(new File("accounts.txt"))) {
+            for (var entry : categories.entrySet()) {
+                writer.println("Category: " + entry.getKey());
+                for (Account account : entry.getValue()) {
+                    writer.println("\t" + account);
+                }
+            }
+            System.out.println("Accounts saved to accounts.txt.");
+        } catch (IOException e) {
+            System.out.println("An error occurred while saving to file.");
+        }
     }
 
     private static String generatePassword() {
         String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()";
         StringBuilder password = new StringBuilder();
-        for (int i = 0; i < 30; i++) {
+        for (int i = 0; i < 12; i++) {
             password.append(chars.charAt(random.nextInt(chars.length())));
         }
         return password.toString();
