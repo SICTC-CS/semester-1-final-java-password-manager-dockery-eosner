@@ -1,36 +1,5 @@
-import java.util.*; 
-import java.io.*; // Import for file handling
-
-class Account {
-    private String username;
-    private String password;
-
-    public Account(String username, String password) {
-        this.username = username;
-        this.password = password;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    @Override
-    public String toString() {
-        return "Username: " + username + ", Password: " + password;
-    }
-}
+import java.util.*;
+import java.io.*;
 
 public class PasswordManager {
     private static final Scanner scanner = new Scanner(System.in);
@@ -38,6 +7,9 @@ public class PasswordManager {
     private static final Random random = new Random();
 
     public static void main(String[] args) {
+        // Load data from accounts.txt on startup
+        loadFromFile();
+
         System.out.println("Welcome to the Java Password Manager.");
         while (true) {
             System.out.println("\nMenu:");
@@ -194,12 +166,40 @@ public class PasswordManager {
             for (var entry : categories.entrySet()) {
                 writer.println("Category: " + entry.getKey());
                 for (Account account : entry.getValue()) {
-                    writer.println("\t" + account);
+                    writer.println(account.getUsername() + "," + account.getPassword());
                 }
             }
             System.out.println("Accounts saved to accounts.txt.");
         } catch (IOException e) {
             System.out.println("An error occurred while saving to file.");
+        }
+    }
+
+    private static void loadFromFile() {
+        File file = new File("accounts.txt");
+        if (!file.exists()) {
+            return; // If file doesn't exist, nothing to load
+        }
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            String line;
+            String currentCategory = null;
+            while ((line = reader.readLine()) != null) {
+                if (line.startsWith("Category: ")) {
+                    currentCategory = line.substring(10).trim();
+                    categories.putIfAbsent(currentCategory, new ArrayList<>());
+                } else if (currentCategory != null) {
+                    String[] parts = line.split(",", 2);
+                    if (parts.length == 2) {
+                        String username = parts[0].trim();
+                        String password = parts[1].trim();
+                        categories.get(currentCategory).add(new Account(username, password));
+                    }
+                }
+            }
+            System.out.println("Accounts loaded from accounts.txt.");
+        } catch (IOException e) {
+            System.out.println("An error occurred while loading from file.");
         }
     }
 
