@@ -1,4 +1,24 @@
+Category: Building
+HighRise,AVeryHighAndSignificantAlt1tude
+ApartmentComplex,40RoomsAnd250Residents
 Category: Aliens
-	Username: Glorbo, Password: rops04Aoz,Miabnle
+Glorbo,rops04Aoz0Miabnle
+Category: Fruit
+Watermelon,HydrateTheWorldWithF00d
+Category: Car
+RollsRoyce,$3.89AGallon
+Category: Technology
+Microprocessor,SmallYetCrITic4l
+Category: Mummies
+Khoton-Kun,IsmelAssadose308AD
+Category: Balls
+Baseball,776HomersPelota
+Category: Vampire
+Dracula,UniversalBloodTyper1500s
 Category: Default
-	Username: Mike, Password: Pepsi,noice,andA#7
+Mike,PepsiNoIceAndA#7
+Michael,AirForc3$
+Jeremy,SomeNiceSh03s
+Randy,a0e9u5j1aBc
+Category: Snakes
+Anaconda,1DontWantNone
